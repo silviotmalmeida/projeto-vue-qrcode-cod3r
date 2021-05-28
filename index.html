@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+
+    <!-- importando o vue -->
+    <script src="js/vue.min.js"></script>
+
+    <!-- importando o qrious, uma biblioteca para tratar QRCodes -->
+    <script src="js/qrious.min.js"></script>
+
+    <link rel="stylesheet" href="css/style.css">
+    <title>Gerador de QRCode</title>
+</head>
+
+<body>
+
+    <!-- elemento controlado pelo vue -->
+    <div id="app">
+
+        <!-- interpolando o título com o atributo title -->
+        <h1>{{ title }}</h1>
+        <div>
+            <!-- criando um input ligado com o atributo text -->
+            <input type="text" size="25" placeholder="Digite para gerar..." v-model="text">
+        </div>
+
+        <!-- se o atributo tex for diferente de vazio: -->
+        <div v-if="text" class="output">
+
+            <!-- cria/altera uma imagem com valor ligado ao atributo calculado newQRCode -->
+            <img :src="newQRCode" alt="QRCode">
+        </div>
+    </div>
+    <script>
+
+        // criando uma instancia do vue
+        new Vue({
+
+            // definindo o id do elemento a ser controlado pelo vue
+            el: '#app',
+
+            // definindo os atributos a serem disponibiizadas ao elemento controlado
+            data: {
+                title: 'Gerador QRCode',
+                text: 'https://www.cod3r.com.br',
+
+                //criando uma instância de qrcode vazia de tamanho 300px
+                qrcode: new QRious({
+                    size: 300
+                })
+            },
+
+            // definindo os atributos calculados a serem disponibilizados ao elemento controlado
+            computed: {
+
+                // recriando o qrcode com o valor do atributo text
+                newQRCode() {
+
+                    // definindo a string a ser codificada
+                    this.qrcode.value = this.text
+
+                    // retornando a codificação pronta para ser passada a uma imagem qrcode
+                    return this.qrcode.toDataURL()
+                }
+            }
+        })
+    </script>
+</body>
+
+</html>
